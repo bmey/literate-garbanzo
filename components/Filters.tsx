@@ -85,7 +85,7 @@ export const Filters = ({
           />
           {filter.type && (
             <div className="text-xs text-slate-400 my-1">
-              "{measureNames[filter.type]}" ranges from{" "}
+              &quot;{measureNames[filter.type]}&quot; ranges from{" "}
               <b>{globalStats[filter.type].low} to {globalStats[filter.type].high}</b>
             </div>
           )}
