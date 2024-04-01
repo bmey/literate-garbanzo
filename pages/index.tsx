@@ -253,7 +253,7 @@ export default function Home({
 
   return (
     <main className={`flex min-h-screen p-0 ${inter.className}`}>
-      <div className="w-[20rem] flex flex-col p-5 via-slate-950 from-slate-950 to-slate-900 bg-gradient-to-br border-r border-r-slate-800">
+      <div className="w-[20rem] min-w-[20rem] flex flex-col p-5 via-slate-950 from-slate-950 to-slate-900 bg-gradient-to-br border-r border-r-slate-800">
         <div className="border-b border-emerald-400 pb-3 mb-8 text-2xl bg-gradient-to-r to-pink-300 from-emerald-400 inline-block text-transparent bg-clip-text">
           <h1>Patient Satisfaction</h1>
         </div>
@@ -270,7 +270,7 @@ export default function Home({
         />
       </div>
       <div className="flex flex-col">
-        <div className="h-[10rem] bg-slate-900 bg-gradient-to-br border-b border-b-slate-800 flex flex-col gap-1 px-5 py-3 justify-center">
+        <div className="h-[10rem] bg-slate-900 bg-gradient-to-br border-b border-b-slate-800 flex flex-col gap-1 px-5 py-3 justify-center overflow-y-clip overflow-x-auto max-w-[calc(100vw-20rem)]">
           <div className="text-sm text-slate-400 font-light">
             {measureNames[selectedMeasure]}
           </div>
@@ -305,12 +305,6 @@ export default function Home({
                 Avg
               </div>
             </div>
-            {/* TODO: <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-              <div className="text-3xl text-slate-200">2.5</div>
-              <div className="uppercase text-slate-300 text-xs tracking-tight">
-                Benchmark
-              </div>
-            </div> */}
             <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
               <div className="text-3xl text-slate-200">
                 {formatNumber(
@@ -337,12 +331,6 @@ export default function Home({
               </div>
               <div className="uppercase text-slate-300 text-xs tracking-tight">
                 Low
-              </div>
-            </div>
-            <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-              <div className="text-3xl text-slate-200">CHART</div>
-              <div className="uppercase text-slate-300 text-xs tracking-tight">
-                Distribution chart here
               </div>
             </div>
             <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
