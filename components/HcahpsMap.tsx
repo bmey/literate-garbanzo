@@ -1,11 +1,11 @@
 import DrawControl from "@/components/DrawControl";
-import HospitalTooltip from "@/components/HospitalTooltip";
 import { Hospital } from "@/types/hospital";
 import { MeasureType } from "@/types/measures";
 import { MeasureStats } from "@/utils/stats";
 import { Feature, FeatureCollection } from "geojson";
 import { useCallback, useMemo, useState } from "react";
 import Map, { CircleLayer, Layer, LayerProps, Source } from "react-map-gl";
+import { HospitalSlideOver } from "./HospitalSlideOver";
 
 const clusterProperties = (Object.keys(MeasureType) as MeasureType[]).reduce(
   (result, type) => {
@@ -118,51 +118,51 @@ export const HcahpsMap = ({
   }, [selectedMeasure, globalStats]);
 
   return (
-    <Map
-      {...viewState}
-      initialViewState={initialViewState}
-      onMove={(evt) => setViewState(evt.viewState)}
-      onClick={onClick}
-      reuseMaps
-      mapboxAccessToken={mapboxToken}
-      style={{
-        width: "calc(100vw - 20rem)",
-        height: "calc(100vh - 10rem)",
-      }}
-      mapStyle="mapbox://styles/mapbox/dark-v9"
-      attributionControl={false}
-      interactiveLayerIds={["points"]}
-    >
-      <DrawControl
-        position="top-left"
-        displayControlsDefault={false}
-        controls={{
-          polygon: true,
-          trash: true,
+    <>
+      <Map
+        {...viewState}
+        initialViewState={initialViewState}
+        onMove={(evt) => setViewState(evt.viewState)}
+        onClick={onClick}
+        reuseMaps
+        mapboxAccessToken={mapboxToken}
+        style={{
+          width: "calc(100vw - 20rem)",
+          height: "calc(100vh - 10rem)",
         }}
-        defaultMode="draw_polygon"
-        onCreate={onUpdatePolygon}
-        onUpdate={onUpdatePolygon}
-        onDelete={onDeletePolygon}
-      />
-      <Source
-        id="hospitals"
-        type="geojson"
-        data={filteredHospitals}
-        cluster={true}
-        clusterMaxZoom={14}
-        clusterRadius={50}
-        clusterProperties={clusterProperties}
+        mapStyle="mapbox://styles/mapbox/dark-v9"
+        attributionControl={false}
+        interactiveLayerIds={["points"]}
       >
-        <Layer {...layerStyle} />
-        <Layer {...clusterLayer} />
-      </Source>
-      {popupInfo && (
-        <HospitalTooltip
-          hospital={popupInfo}
-          onClose={() => setPopupInfo(null)}
+        <DrawControl
+          position="top-left"
+          displayControlsDefault={false}
+          controls={{
+            polygon: true,
+            trash: true,
+          }}
+          defaultMode="draw_polygon"
+          onCreate={onUpdatePolygon}
+          onUpdate={onUpdatePolygon}
+          onDelete={onDeletePolygon}
         />
-      )}
-    </Map>
+        <Source
+          id="hospitals"
+          type="geojson"
+          data={filteredHospitals}
+          cluster={true}
+          clusterMaxZoom={14}
+          clusterRadius={50}
+          clusterProperties={clusterProperties}
+        >
+          <Layer {...layerStyle} />
+          <Layer {...clusterLayer} />
+        </Source>
+      </Map>
+      <HospitalSlideOver
+        open={!!popupInfo}
+        setOpen={() => setPopupInfo(null)}
+      />
+    </>
   );
 };
