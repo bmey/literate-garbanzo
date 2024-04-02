@@ -15,6 +15,13 @@ const clusterProperties = (Object.keys(MeasureType) as MeasureType[]).reduce(
   {} as Record<`${MeasureType}_sum`, any>
 );
 
+const theme = {
+  low: "#5b21b6", //violet-800
+  lowStroke: "#2e1065", //violet-950
+  high: "#34d399", //emerald-400
+  highStroke: "#ecfdf5", //emerald-50
+};
+
 interface HcahpsMapProps {
   filteredHospitals: FeatureCollection<any, Hospital>;
   globalStats: Record<MeasureType, MeasureStats>;
@@ -72,18 +79,18 @@ export const HcahpsMap = ({
           ["linear"],
           ["get", selectedMeasure],
           targetStats.low,
-          ["to-color", "#5b21b6"],
+          ["to-color", theme.low],
           targetStats.high,
-          ["to-color", "#34d399"],
+          ["to-color", theme.high],
         ],
         "circle-stroke-color": [
           "interpolate",
           ["linear"],
           ["get", selectedMeasure],
           targetStats.low,
-          ["to-color", "#2e1065"],
+          ["to-color", theme.lowStroke],
           targetStats.high,
-          ["to-color", "#ecfdf5"],
+          ["to-color", theme.highStroke],
         ],
         "circle-stroke-width": [
           "interpolate",
@@ -111,11 +118,21 @@ export const HcahpsMap = ({
           ["linear"],
           ["/", ["get", `${selectedMeasure}_sum`], ["get", "point_count"]],
           targetStats.low,
-          ["to-color", "#5b21b6"],
+          ["to-color", theme.low],
           targetStats.high,
-          ["to-color", "#34d399"],
+          ["to-color", theme.high],
         ],
-        "circle-radius": ["interpolate", ["linear"], ["get", "point_count"], 2, 10, 10, 30, 600, 100],
+        "circle-radius": [
+          "interpolate",
+          ["linear"],
+          ["get", "point_count"],
+          2,
+          10,
+          10,
+          30,
+          600,
+          100,
+        ],
         "circle-blur": 0.6,
         "circle-opacity": ["interpolate", ["linear"], ["zoom"], 1, 1, 23, 0],
       },
@@ -164,6 +181,17 @@ export const HcahpsMap = ({
           <Layer {...clusterLayer} />
         </Source>
       </Map>
+      <div className="absolute bottom-2 right-2 w-max">
+        <div className="flex justify-between font-mono">
+          <div>{globalStats[selectedMeasure].low}</div>
+          <div>{globalStats[selectedMeasure].high}</div>
+        </div>
+        <div className="w-[15rem] h-3 bg-gradient-to-r from-violet-800 to-emerald-400 mb-1"></div>
+        <div className="flex justify-between text-xs uppercase tracking-widest text-slate-300">
+          <div>Low</div>
+          <div>High</div>
+        </div>
+      </div>
       <HospitalSlideOver
         hospital={popupInfo}
         measures={measures}
