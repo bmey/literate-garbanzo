@@ -156,7 +156,7 @@ export default function Home({
   return (
     <main className={`flex min-h-screen p-0 ${inter.className}`}>
       <div className="w-[20rem] min-w-[20rem] flex flex-col p-5 via-slate-950 from-slate-950 to-slate-900 bg-gradient-to-br border-r border-r-slate-800 overflow-y-auto max-h-screen">
-        <div className="border-b border-emerald-400 pb-3 mb-8 text-2xl bg-gradient-to-r to-pink-300 from-emerald-400 inline-block text-transparent bg-clip-text">
+        <div className="border-b border-emerald-400 pb-3 mb-8 text-2xl bg-gradient-to-r to-violet-600 from-emerald-400 inline-block text-transparent bg-clip-text">
           <h1>Patient Satisfaction</h1>
         </div>
         <Select
