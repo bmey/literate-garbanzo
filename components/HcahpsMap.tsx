@@ -35,9 +35,9 @@ export const HcahpsMap = ({
   selectedMeasure,
 }: HcahpsMapProps) => {
   const initialViewState = {
-    longitude: -102.4,
-    latitude: 50.8,
-    zoom: 1.5,
+    longitude: -96.58,
+    latitude: 37.72,
+    zoom: 3.5,
   };
   const [viewState, setViewState] = useState(initialViewState);
   const [popupInfo, setPopupInfo] = useState<Hospital | null>(null);
@@ -157,7 +157,6 @@ export const HcahpsMap = ({
             polygon: true,
             trash: true,
           }}
-          defaultMode="draw_polygon"
           onCreate={onUpdatePolygon}
           onUpdate={onUpdatePolygon}
           onDelete={onDeletePolygon}
