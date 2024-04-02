@@ -15,7 +15,7 @@ export const OperationSelect = ({
     <Listbox value={selected || null} onChange={onChange}>
       {({ open }) => (
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-default rounded-md bg-slate-900 py-1.5 pl-3 pr-10 text-left text-gray-50 shadow-sm ring-1 ring-inset ring-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 sm:text-sm sm:leading-6">
+          <Listbox.Button className="relative w-full cursor-default rounded-md bg-slate-950 py-1.5 pl-3 pr-10 text-left text-gray-50 shadow-sm ring-1 ring-inset ring-gray-700 focus:outline-none focus:ring-2 focus:ring-violet-500 sm:text-sm sm:leading-6">
             <span className="flex items-center">
               <span className="ml-3 block truncate">{selected ?? <>&nbsp;</>}</span>
             </span>

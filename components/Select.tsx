@@ -11,11 +11,13 @@ export const Select = ({
   measures,
   selected,
   onChange,
+  variant = "default",
 }: {
   hideLabel?: boolean;
   measures: MeasureGroups;
   selected: MeasureType | undefined;
   onChange: (val: MeasureType) => void;
+  variant?: "dark" | "default";
 }) => {
   const [query, setQuery] = useState("");
 
@@ -31,7 +33,13 @@ export const Select = ({
       </Combobox.Label>
       <div className="relative">
         <Combobox.Input
-          className="w-full rounded-md border-0 bg-slate-900 py-1.5 truncate pl-3 pr-10 text-gray-50 shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-violet-500 sm:text-sm sm:leading-6"
+          className={classNames(
+            "w-full rounded-md border-0 py-1.5 truncate pl-3 pr-10 text-gray-50 shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-violet-500 sm:text-sm sm:leading-6",
+            {
+              "bg-slate-900": variant === "default",
+              "bg-slate-950": variant === "dark",
+            }
+          )}
           onChange={(event) => setQuery(event.target.value)}
           displayValue={(selected: MeasureType) =>
             selected ? measureNames[selected] : ""
@@ -61,7 +69,11 @@ export const Select = ({
             })
             .map(([key, measureGroup]) => {
               const groupItems = Object.values(measureGroup).filter(
-                (measure) => !query || measureNames[measure.id].toLocaleLowerCase().includes(query.toLowerCase())
+                (measure) =>
+                  !query ||
+                  measureNames[measure.id]
+                    .toLocaleLowerCase()
+                    .includes(query.toLowerCase())
               );
               return (
                 <Fragment key={key}>

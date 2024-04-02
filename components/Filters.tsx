@@ -53,7 +53,7 @@ const ValueInput = ({
             setHasError(true);
           }
         }}
-        className="border-0 w-full bg-transparent py-1.5 pl-1 text-slate-50 sm:text-sm sm:leading-6 ring-0 focus:outline-none"
+        className="border-0 w-full bg-slate-950 rounded-md py-1.5 pl-2 text-slate-50 sm:text-sm sm:leading-6 ring-0 focus:outline-none"
       />
     </div>
   );
@@ -75,6 +75,7 @@ export const Filters = ({
         >
           <Select
             hideLabel
+            variant="dark"
             measures={measures}
             selected={filter.type}
             onChange={(newType) => {
