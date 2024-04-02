@@ -115,7 +115,7 @@ export const HcahpsMap = ({
           targetStats.high,
           ["to-color", "#34d399"],
         ],
-        "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+        "circle-radius": ["interpolate", ["linear"], ["get", "point_count"], 2, 10, 10, 30, 600, 100],
         "circle-blur": 0.6,
         "circle-opacity": ["interpolate", ["linear"], ["zoom"], 1, 1, 23, 0],
       },
