@@ -38,46 +38,51 @@ export const Summary = ({
             </div>
           )}
         </div>
-        <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-          <div className="text-3xl text-slate-200">
-            {formatNumber(
-              polygonAggregate?.avg ?? filteredGlobalStats[selectedMeasure].avg,
-              {
-                maximumFractionDigits: 2,
-              }
-            )}
+        <div className="rounded-lg p-5 flex border border-slate-700 gap-5">
+          <div className="flex flex-col items-center justify-center px-2 gap-1">
+            <div className="text-3xl text-slate-200">
+              {formatNumber(
+                polygonAggregate?.low ??
+                  filteredGlobalStats[selectedMeasure].low,
+                {
+                  maximumFractionDigits: 2,
+                }
+              )}
+            </div>
+            <div className="uppercase text-slate-300 text-xs tracking-tight">
+              Low
+            </div>
           </div>
-          <div className="uppercase text-slate-300 text-xs tracking-tight">
-            Avg
+          <div className="flex flex-col items-center justify-center gap-1">
+            <div className="text-3xl text-slate-200">
+              {formatNumber(
+                polygonAggregate?.avg ??
+                  filteredGlobalStats[selectedMeasure].avg,
+                {
+                  maximumFractionDigits: 2,
+                }
+              )}
+            </div>
+            <div className="uppercase text-slate-300 text-xs tracking-tight">
+              Avg
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-1 px-2">
+            <div className="text-3xl text-slate-200">
+              {formatNumber(
+                polygonAggregate?.high ??
+                  filteredGlobalStats[selectedMeasure].high,
+                {
+                  maximumFractionDigits: 2,
+                }
+              )}
+            </div>
+            <div className="uppercase text-slate-300 text-xs tracking-tight">
+              High
+            </div>
           </div>
         </div>
-        <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-          <div className="text-3xl text-slate-200">
-            {formatNumber(
-              polygonAggregate?.high ??
-                filteredGlobalStats[selectedMeasure].high,
-              {
-                maximumFractionDigits: 2,
-              }
-            )}
-          </div>
-          <div className="uppercase text-slate-300 text-xs tracking-tight">
-            High
-          </div>
-        </div>
-        <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-          <div className="text-3xl text-slate-200">
-            {formatNumber(
-              polygonAggregate?.low ?? filteredGlobalStats[selectedMeasure].low,
-              {
-                maximumFractionDigits: 2,
-              }
-            )}
-          </div>
-          <div className="uppercase text-slate-300 text-xs tracking-tight">
-            Low
-          </div>
-        </div>
+
         <div className="rounded-lg flex min-w-[10rem] flex-col items-center py-2 justify-center border border-slate-700 gap-1">
           {chart}
         </div>
