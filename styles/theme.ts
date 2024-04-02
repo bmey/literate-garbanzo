@@ -1,5 +1,6 @@
 export const theme = {
-    colorRatingLow: "#9E68DD",
-    colorRatingMid: "#E594E5",
-    colorRatingHigh: "#6BDAB0",
+    low: "#5b21b6", //violet-800
+    lowStroke: "#2e1065", //violet-950
+    high: "#34d399", //emerald-400
+    highStroke: "#ecfdf5", //emerald-50
 };

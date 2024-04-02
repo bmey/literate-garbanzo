@@ -4,12 +4,14 @@ import { formatNumber } from "@/utils/numbers";
 import { MeasureStats } from "@/utils/stats";
 
 interface SummaryProps {
+  chart: JSX.Element;
   selectedMeasure: MeasureType;
   polygonAggregate: MeasureStats | undefined;
   filteredGlobalStats: Record<MeasureType, MeasureStats>;
 }
 
 export const Summary = ({
+  chart,
   selectedMeasure,
   polygonAggregate,
   filteredGlobalStats,
@@ -76,11 +78,8 @@ export const Summary = ({
             Low
           </div>
         </div>
-        <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
-          <div className="text-3xl text-slate-200">CHART</div>
-          <div className="uppercase text-slate-300 text-xs tracking-tight">
-            Pie chart here
-          </div>
+        <div className="rounded-lg flex min-w-[10rem] flex-col items-center py-2 justify-center border border-slate-700 gap-1">
+          {chart}
         </div>
       </div>
     </div>

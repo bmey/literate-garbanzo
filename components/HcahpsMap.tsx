@@ -1,4 +1,5 @@
 import DrawControl from "@/components/DrawControl";
+import { theme } from "@/styles/theme";
 import { Hospital } from "@/types/hospital";
 import { MeasureGroups, MeasureType } from "@/types/measures";
 import { MeasureStats } from "@/utils/stats";
@@ -14,13 +15,6 @@ const clusterProperties = (Object.keys(MeasureType) as MeasureType[]).reduce(
   },
   {} as Record<`${MeasureType}_sum`, any>
 );
-
-const theme = {
-  low: "#5b21b6", //violet-800
-  lowStroke: "#2e1065", //violet-950
-  high: "#34d399", //emerald-400
-  highStroke: "#ecfdf5", //emerald-50
-};
 
 interface HcahpsMapProps {
   filteredHospitals: FeatureCollection<any, Hospital>;

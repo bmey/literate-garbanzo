@@ -1,3 +1,4 @@
+import { SimpleBarChart, BarChartPoint } from "@/components/BarChart";
 import { Filters } from "@/components/Filters";
 import { HcahpsMap } from "@/components/HcahpsMap";
 import { Select } from "@/components/Select";
@@ -123,7 +124,7 @@ export default function Home({
     };
   }, [hospitals, selectedMeasure, filters]);
 
-  const polygonAggregate = useMemo(() => {
+  const polygonValues = useMemo<(number | undefined)[]>(() => {
     const polygons = Object.values(drawPolygonFeatures);
     if (!polygons.length) return undefined;
 
@@ -137,21 +138,48 @@ export default function Home({
       selectedMeasure,
       "values"
     );
-    const values: (number | undefined)[] =
-      collected.features[0].properties?.values || [];
-    return stats(values);
+    return collected.features[0].properties?.values || [];
   }, [drawPolygonFeatures, filteredHospitals, selectedMeasure]);
 
+  const polygonAggregate = useMemo(
+    () => (polygonValues ? stats(polygonValues) : undefined),
+    [polygonValues]
+  );
+
+  const filteredGlobalValues = useMemo(
+    () =>
+      (Object.keys(MeasureType) as MeasureType[]).reduce((result, type) => {
+        result[type] = filteredHospitals.features.map(
+          (h) => h.properties[type]
+        );
+        return result;
+      }, {} as Record<MeasureType, (number | undefined)[]>),
+    [filteredHospitals]
+  );
   const filteredGlobalStats = useMemo(
     () =>
       (Object.keys(MeasureType) as MeasureType[]).reduce((result, type) => {
-        result[type] = stats(
-          filteredHospitals.features.map((h) => h.properties[type])
-        );
+        result[type] = stats(filteredGlobalValues[type]);
         return result;
       }, {} as Record<MeasureType, MeasureStats>),
-    [filteredHospitals]
+    [filteredGlobalValues]
   );
+
+  const chartData = useMemo<BarChartPoint[]>(() => {
+    const map = (polygonValues || filteredGlobalValues[selectedMeasure]).reduce(
+      (result, val) => {
+        if (!val) return result;
+        const id = `${val}`;
+        result[id] = {
+          id,
+          value: 1 + (result[id]?.value || 0),
+        };
+        return result;
+      },
+      {} as Record<string, BarChartPoint>
+    );
+    return Object.values(map).sort((a, b) => a.id.localeCompare(b.id));
+  }, [polygonValues, filteredGlobalValues]);
 
   return (
     <main className={`flex min-h-screen p-0 ${inter.className}`}>
@@ -173,7 +201,12 @@ export default function Home({
       </div>
       <div className="flex flex-col">
         <Summary
-          {...{ selectedMeasure, polygonAggregate, filteredGlobalStats }}
+          {...{
+            selectedMeasure,
+            polygonAggregate,
+            filteredGlobalStats,
+            chart: <SimpleBarChart data={chartData} />,
+          }}
         />
         <HcahpsMap
           {...{
