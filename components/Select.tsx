@@ -36,6 +36,7 @@ export const Select = ({
           displayValue={(selected: MeasureType) =>
             selected ? measureNames[selected] : ""
           }
+          onClick={(e) => (e.target as HTMLInputElement).select()}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon
