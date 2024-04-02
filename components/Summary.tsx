@@ -23,7 +23,7 @@ export const Summary = ({
         <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1 min-w-32 relative">
           <div className="text-3xl text-emerald-500">
             {formatNumber(
-              polygonAggregate?.count ||
+              polygonAggregate?.count ??
                 filteredGlobalStats[selectedMeasure].count
             )}
           </div>
@@ -39,7 +39,7 @@ export const Summary = ({
         <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
           <div className="text-3xl text-slate-200">
             {formatNumber(
-              polygonAggregate?.avg || filteredGlobalStats[selectedMeasure].avg,
+              polygonAggregate?.avg ?? filteredGlobalStats[selectedMeasure].avg,
               {
                 maximumFractionDigits: 2,
               }
@@ -52,7 +52,7 @@ export const Summary = ({
         <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
           <div className="text-3xl text-slate-200">
             {formatNumber(
-              polygonAggregate?.high ||
+              polygonAggregate?.high ??
                 filteredGlobalStats[selectedMeasure].high,
               {
                 maximumFractionDigits: 2,
@@ -66,7 +66,7 @@ export const Summary = ({
         <div className="rounded-lg p-5 flex flex-col items-center justify-center border border-slate-700 gap-1">
           <div className="text-3xl text-slate-200">
             {formatNumber(
-              polygonAggregate?.low || filteredGlobalStats[selectedMeasure].low,
+              polygonAggregate?.low ?? filteredGlobalStats[selectedMeasure].low,
               {
                 maximumFractionDigits: 2,
               }

@@ -8,7 +8,7 @@ export const stats = (values: (number | undefined)[]) => {
   return {
     high: +(sorted.at(-1) || 0),
     low: +(sorted.at(0) || 0),
-    avg: total / withValues.length,
+    avg: total / Math.max(withValues.length, 1),
     count: withValues.length,
     invalidCount: count - withValues.length,
   };
