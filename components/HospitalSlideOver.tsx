@@ -1,6 +1,7 @@
 import { Hospital, ServiceLevel } from "@/types/hospital";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Listbox, Transition } from "@headlessui/react";
 import {
+  CheckCircleIcon,
   StarIcon as StarIconOutline,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -20,8 +21,17 @@ import {
   FaXRay,
 } from "react-icons/fa6";
 import type { IconType } from "react-icons";
+import {
+  MeasureGroup,
+  MeasureGroups,
+  MeasureGroupType,
+} from "@/types/measures";
+import { measureGroupNames } from "@/utils/measureGroupNames";
+import { measureNames } from "@/utils/measureNames";
+import { formatNumber } from "@/utils/numbers";
 interface Props {
   hospital: Hospital | null;
+  measures: MeasureGroups;
   open: boolean;
   setOpen: (val: boolean) => void;
   setHospital: () => void;
@@ -63,8 +73,7 @@ const Service = ({
             serviceLevel === ServiceLevel["Below the national average"],
           "from-emerald-950 to-transparent bg-gradient-to-br":
             serviceLevel === ServiceLevel["Same as the national average"],
-          "bg-slate-900":
-            serviceLevel === ServiceLevel["Not Available"],
+          "bg-slate-900": serviceLevel === ServiceLevel["Not Available"],
         }
       )}
     >
@@ -119,7 +128,13 @@ const YesNoService = ({
   </div>
 );
 
-const DialogContent = ({ hospital }: { hospital: Hospital }) => {
+const DialogContent = ({
+  hospital,
+  measures,
+}: {
+  hospital: Hospital;
+  measures: MeasureGroups;
+}) => {
   return (
     <div className="flex h-full flex-col overflow-y-scroll bg-slate-950 -mr-4 py-6 shadow-xl">
       <div className="px-4 sm:px-6">
@@ -216,22 +231,53 @@ const DialogContent = ({ hospital }: { hospital: Hospital }) => {
             }
           />
         </div>
-        {/*                             
-                        <div>
-                            Ownership
-                            {
-                                hospitalOwnership
-                            }
-                        </div>
-                        
-                        <div>
-                            Surveys
-                            {
-                                numberOfCompletedSurveys
-                                surveyResponseRatePercent
-                                ...measures
-                            }
-                        </div> */}
+        <div className="mb-1">HCAHPS Result</div>
+        <div className="flex gap-4 my-4">
+          <div className="rounded-md w-1/2 bg-gray-900 gap-1 flex flex-col p-3 border border-slate-700">
+            <div className="text-3xl font-bold font-mono">
+              {formatNumber(hospital.numberOfCompletedSurveys)}
+            </div>
+            <div className="text-sm text-slate-300">Surveys completed</div>
+          </div>
+          <div className="rounded-md w-1/2 bg-gray-900 gap-1 flex flex-col p-3 border border-slate-700">
+            <div className="text-3xl font-bold font-mono">
+              {hospital.surveyResponseRatePercent}%
+            </div>
+            <div className="text-sm text-slate-300">Response rate</div>
+          </div>
+        </div>
+        {Object.entries(measures)
+          .sort((a, b) => {
+            if (a[0] === MeasureGroupType.H_STAR_RATING) {
+              return -1;
+            } else if (b[0] === MeasureGroupType.H_STAR_RATING) {
+              return 1;
+            } else if (a[0] === MeasureGroupType.H_HSP_RATING) {
+              return -1;
+            } else if (b[0] === MeasureGroupType.H_HSP_RATING) {
+              return 1;
+            }
+            return 0;
+          })
+          .map(([key, measureGroup]) => (
+            <Fragment key={key}>
+              <div className="flex items-center gap-1 border-t bg-slate-800 py-2 pl-2 uppercase text-xs text-slate-400 border-t-slate-700">
+                {measureGroupNames[key as MeasureGroupType]}
+              </div>
+              {Object.values(measureGroup).map((measure) => (
+                <div key={measure.id} className={classNames("py-2 pl-3 pr-9")}>
+                  <div className="flex items-center justify-between">
+                    <span className={classNames("ml-3 text-sm font-light")}>
+                      {measureNames[measure.id]}
+                    </span>
+                    <span className={classNames("ml-3 text-xl font-mono")}>
+                      {hospital[measure.id]}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </Fragment>
+          ))}
       </div>
     </div>
   );
@@ -239,6 +285,7 @@ const DialogContent = ({ hospital }: { hospital: Hospital }) => {
 
 export const HospitalSlideOver = ({
   hospital,
+  measures,
   open,
   setOpen,
   setHospital,
@@ -293,7 +340,9 @@ export const HospitalSlideOver = ({
                       </button>
                     </div>
                   </Transition.Child>
-                  {hospital && <DialogContent hospital={hospital} />}
+                  {hospital && (
+                    <DialogContent hospital={hospital} measures={measures} />
+                  )}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

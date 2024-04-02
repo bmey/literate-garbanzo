@@ -180,6 +180,7 @@ export default function Home({
             filteredHospitals,
             globalStats,
             mapboxToken,
+            measures,
             onDeletePolygon,
             onUpdatePolygon,
             selectedMeasure,

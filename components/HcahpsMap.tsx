@@ -1,6 +1,6 @@
 import DrawControl from "@/components/DrawControl";
 import { Hospital } from "@/types/hospital";
-import { MeasureType } from "@/types/measures";
+import { MeasureGroups, MeasureType } from "@/types/measures";
 import { MeasureStats } from "@/utils/stats";
 import { Feature, FeatureCollection } from "geojson";
 import { useCallback, useMemo, useState } from "react";
@@ -19,6 +19,7 @@ interface HcahpsMapProps {
   filteredHospitals: FeatureCollection<any, Hospital>;
   globalStats: Record<MeasureType, MeasureStats>;
   mapboxToken: string | undefined;
+  measures: MeasureGroups;
   onDeletePolygon: (e: { features: Feature[] }) => void;
   onUpdatePolygon: (e: { features: any[] }) => void;
   selectedMeasure: MeasureType;
@@ -27,6 +28,7 @@ export const HcahpsMap = ({
   filteredHospitals,
   globalStats,
   mapboxToken,
+  measures,
   onDeletePolygon,
   onUpdatePolygon,
   selectedMeasure,
@@ -164,6 +166,7 @@ export const HcahpsMap = ({
       </Map>
       <HospitalSlideOver
         hospital={popupInfo}
+        measures={measures}
         open={popupOpen}
         setOpen={setPopupOpen}
         setHospital={() => setPopupInfo(null)}
