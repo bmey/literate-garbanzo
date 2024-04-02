@@ -1,19 +1,123 @@
-import { Hospital } from "@/types/hospital";
-import Image from "next/image";
+import { Hospital, ServiceLevel } from "@/types/hospital";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  XMarkIcon,
   StarIcon as StarIconOutline,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
+import classNames from "classnames";
+import Image from "next/image";
 import { Fragment } from "react";
-
+import {
+  FaArrowsRotate,
+  FaBullseye,
+  FaClock,
+  FaComputer,
+  FaFaceGrinBeam,
+  FaShieldHalved,
+  FaSkullCrossbones,
+  FaTruckMedical,
+  FaXRay,
+} from "react-icons/fa6";
+import type { IconType } from "react-icons";
 interface Props {
   hospital: Hospital | null;
   open: boolean;
   setOpen: (val: boolean) => void;
   setHospital: () => void;
 }
+
+const serviceTitle: Record<string, string> = {
+  emergencyServices: "Emergency",
+  meetsCriteriaForPromotingInteroperabilityOfEhrs: "EHRS interop.",
+  mortalityNationalComparison: "Mortality",
+  safetyOfCareNationalComparison: "Safety",
+  readmissionNationalComparison: "Readmission",
+  patientExperienceNationalComparison: "Experience",
+  effectivenessOfCareNationalComparison: "Effectiveness",
+  timelinessOfCareNationalComparison: "Timeliness",
+  efficientUseOfMedicalImagingNationalComparison: "Imaging",
+};
+
+const Service = ({
+  Icon,
+  propKey,
+  serviceLevel,
+}: {
+  Icon: IconType;
+  propKey: keyof Hospital;
+  serviceLevel: ServiceLevel;
+}) => (
+  <div
+    className={classNames(
+      "flex min-w-[15rem] border items-center border-slate-700 rounded-md gap-3 pr-3 overflow-hidden"
+    )}
+  >
+    <div
+      className={classNames(
+        "h-full w-[2rem] min-w-[2rem] flex items-center justify-center",
+        {
+          "from-emerald-600 to-transparent bg-gradient-to-br":
+            serviceLevel === ServiceLevel["Above the national average"],
+          "from-pink-800 to-transparent bg-gradient-to-br":
+            serviceLevel === ServiceLevel["Below the national average"],
+          "from-emerald-950 to-transparent bg-gradient-to-br":
+            serviceLevel === ServiceLevel["Same as the national average"],
+          "bg-slate-900":
+            serviceLevel === ServiceLevel["Not Available"],
+        }
+      )}
+    >
+      <Icon size={16} />
+    </div>
+    <div className="text-slate-50 text-sm my-1 grow">
+      {serviceTitle[propKey]}
+    </div>
+    <div className="text-xs uppercase font-light text-slate-400 whitespace-nowrap">
+      {serviceLevel === ServiceLevel["Above the national average"] &&
+        "Above avg."}
+      {serviceLevel === ServiceLevel["Below the national average"] &&
+        "Below avg."}
+      {serviceLevel === ServiceLevel["Same as the national average"] &&
+        "Average"}
+      {serviceLevel === ServiceLevel["Not Available"] && "Not available"}
+    </div>
+  </div>
+);
+
+const YesNoService = ({
+  Icon,
+  propKey,
+  hasService,
+}: {
+  Icon: IconType;
+  propKey: keyof Hospital;
+  hasService: boolean;
+}) => (
+  <div
+    className={classNames(
+      "flex border items-center justify-between border-slate-700 rounded-md gap-3 pr-3 overflow-hidden"
+    )}
+  >
+    <div
+      className={classNames(
+        "h-full w-[2rem] min-w-[2rem] flex items-center justify-center",
+        {
+          "from-emerald-600 to-transparent bg-gradient-to-br": hasService,
+          "from-pink-800 to-transparent bg-gradient-to-br": !hasService,
+        }
+      )}
+    >
+      <Icon size={16} />
+    </div>
+    <div className="text-slate-50 text-center text-sm my-1">
+      {serviceTitle[propKey]}
+    </div>
+    <div className="text-xs uppercase font-light text-slate-400">
+      {hasService ? "Yes" : "No"}
+    </div>
+  </div>
+);
 
 const DialogContent = ({ hospital }: { hospital: Hospital }) => {
   return (
@@ -34,7 +138,12 @@ const DialogContent = ({ hospital }: { hospital: Hospital }) => {
               )}
             </Fragment>
           ))}
-          <div className="text-xl ml-5">{hospital.hospitalType}</div>
+          <div className="ml-auto text-right">
+            <div className="text-xl">{hospital.hospitalType}</div>
+            <div className="text-xs text-slate-400">
+              {hospital.hospitalOwnership}
+            </div>
+          </div>
         </div>
         <div className="h-52 w-full">
           <Image
@@ -45,6 +154,84 @@ const DialogContent = ({ hospital }: { hospital: Hospital }) => {
             alt="hospital"
           />
         </div>
+        <div className="my-2 text-slate-200 text-sm">
+          <div>{hospital.address}</div>
+          <div>
+            {hospital.city},{hospital.state} {hospital.zipCode}
+          </div>
+          <div>{hospital.phoneNumber}</div>
+        </div>
+        <div className="mt-6">Services</div>
+        <div className="flex gap-2 mb-6 mt-1">
+          <YesNoService
+            Icon={FaTruckMedical}
+            propKey="emergencyServices"
+            hasService={hospital.emergencyServices === "Yes"}
+          />
+          <YesNoService
+            Icon={FaComputer}
+            propKey="meetsCriteriaForPromotingInteroperabilityOfEhrs"
+            hasService={
+              hospital.meetsCriteriaForPromotingInteroperabilityOfEhrs === "Y"
+            }
+          />
+        </div>
+        <div>National Comparisons</div>
+        <div className="flex flex-wrap gap-2 mb-6 mt-1">
+          <Service
+            Icon={FaSkullCrossbones}
+            propKey={"mortalityNationalComparison"}
+            serviceLevel={hospital.mortalityNationalComparison}
+          />
+          <Service
+            Icon={FaShieldHalved}
+            propKey={"safetyOfCareNationalComparison"}
+            serviceLevel={hospital.safetyOfCareNationalComparison}
+          />
+          <Service
+            Icon={FaArrowsRotate}
+            propKey={"readmissionNationalComparison"}
+            serviceLevel={hospital.readmissionNationalComparison}
+          />
+          <Service
+            Icon={FaFaceGrinBeam}
+            propKey={"patientExperienceNationalComparison"}
+            serviceLevel={hospital.patientExperienceNationalComparison}
+          />
+          <Service
+            Icon={FaBullseye}
+            propKey={"effectivenessOfCareNationalComparison"}
+            serviceLevel={hospital.effectivenessOfCareNationalComparison}
+          />
+          <Service
+            Icon={FaClock}
+            propKey={"timelinessOfCareNationalComparison"}
+            serviceLevel={hospital.timelinessOfCareNationalComparison}
+          />
+          <Service
+            Icon={FaXRay}
+            propKey="efficientUseOfMedicalImagingNationalComparison"
+            serviceLevel={
+              hospital.efficientUseOfMedicalImagingNationalComparison
+            }
+          />
+        </div>
+        {/*                             
+                        <div>
+                            Ownership
+                            {
+                                hospitalOwnership
+                            }
+                        </div>
+                        
+                        <div>
+                            Surveys
+                            {
+                                numberOfCompletedSurveys
+                                surveyResponseRatePercent
+                                ...measures
+                            }
+                        </div> */}
       </div>
     </div>
   );
