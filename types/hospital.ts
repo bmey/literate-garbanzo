@@ -2,7 +2,7 @@ import { MeasureType } from "./measures";
 
 export type Hospital = Record<MeasureType, number | undefined> & {
   id: string;
-  name: string;
+  facilityName: string;
   address: string;
   city: string;
   state: string;

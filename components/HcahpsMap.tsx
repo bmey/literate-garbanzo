@@ -38,6 +38,7 @@ export const HcahpsMap = ({
   };
   const [viewState, setViewState] = useState(initialViewState);
   const [popupInfo, setPopupInfo] = useState<Hospital | null>(null);
+  const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const onClick = useCallback(
     (e: mapboxgl.MapLayerMouseEvent) => {
       const features = e.features?.[0];
@@ -47,11 +48,13 @@ export const HcahpsMap = ({
         !features?.properties?.cluster
       ) {
         setPopupInfo(features?.properties as Hospital);
+        setPopupOpen(true);
       } else {
         setPopupInfo(null);
+        setPopupOpen(false);
       }
     },
-    [setPopupInfo, popupInfo]
+    [setPopupInfo, popupInfo, setPopupOpen]
   );
 
   const layerStyle: CircleLayer = useMemo(() => {
@@ -160,8 +163,10 @@ export const HcahpsMap = ({
         </Source>
       </Map>
       <HospitalSlideOver
-        open={!!popupInfo}
-        setOpen={() => setPopupInfo(null)}
+        hospital={popupInfo}
+        open={popupOpen}
+        setOpen={setPopupOpen}
+        setHospital={() => setPopupInfo(null)}
       />
     </>
   );

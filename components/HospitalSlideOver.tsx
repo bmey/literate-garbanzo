@@ -1,12 +1,61 @@
-import { Fragment, useState } from "react";
+import { Hospital } from "@/types/hospital";
+import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  XMarkIcon,
+  StarIcon as StarIconOutline,
+} from "@heroicons/react/24/outline";
+import { StarIcon } from "@heroicons/react/24/solid";
+import { Fragment } from "react";
 
 interface Props {
-    open: boolean;
-    setOpen: (val: boolean) => void;
+  hospital: Hospital | null;
+  open: boolean;
+  setOpen: (val: boolean) => void;
+  setHospital: () => void;
 }
-export const HospitalSlideOver = ({ open, setOpen }: Props) => {
+
+const DialogContent = ({ hospital }: { hospital: Hospital }) => {
+  return (
+    <div className="flex h-full flex-col overflow-y-scroll bg-slate-950 -mr-4 py-6 shadow-xl">
+      <div className="px-4 sm:px-6">
+        <Dialog.Title className="text-base font-semibold leading-6 text-slate-50">
+          {hospital.facilityName || "Hospital details"}
+        </Dialog.Title>
+      </div>
+      <div className="relative mt-6 flex-1 px-4 sm:px-6">
+        <div className="flex items-center mb-6">
+          {[1, 2, 3, 4, 5].map((starIndex) => (
+            <Fragment key={starIndex}>
+              {starIndex <= (hospital.hospitalOverallRating || 0) ? (
+                <StarIcon className="h-7 w-7 ml-1" aria-hidden="true" />
+              ) : (
+                <StarIconOutline className="h-7 w-7 ml-1" aria-hidden="true" />
+              )}
+            </Fragment>
+          ))}
+          <div className="text-xl ml-5">{hospital.hospitalType}</div>
+        </div>
+        <div className="h-52 w-full">
+          <Image
+            src="/stock-hospital.jpeg"
+            width={500}
+            height={250}
+            className="object-cover w-full h-full"
+            alt="hospital"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const HospitalSlideOver = ({
+  hospital,
+  open,
+  setOpen,
+  setHospital,
+}: Props) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -18,6 +67,7 @@ export const HospitalSlideOver = ({ open, setOpen }: Props) => {
           leave="ease-in-out duration-500"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
+          afterLeave={setHospital}
         >
           <div className="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity" />
         </Transition.Child>
@@ -56,16 +106,7 @@ export const HospitalSlideOver = ({ open, setOpen }: Props) => {
                       </button>
                     </div>
                   </Transition.Child>
-                  <div className="flex h-full flex-col overflow-y-scroll bg-slate-950 -mr-4 py-6 shadow-xl">
-                    <div className="px-4 sm:px-6">
-                      <Dialog.Title className="text-base font-semibold leading-6 text-slate-50">
-                        Panel title
-                      </Dialog.Title>
-                    </div>
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                      {/* Your content */}
-                    </div>
-                  </div>
+                  {hospital && <DialogContent hospital={hospital} />}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
@@ -74,4 +115,4 @@ export const HospitalSlideOver = ({ open, setOpen }: Props) => {
       </Dialog>
     </Transition.Root>
   );
-}
+};
