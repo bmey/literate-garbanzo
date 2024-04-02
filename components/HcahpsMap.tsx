@@ -67,7 +67,7 @@ export const HcahpsMap = ({
       type: "circle",
       filter: ["!", ["has", "point_count"]],
       paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 4, 0, 23, 25],
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 1, 23, 25],
         "circle-color": [
           "interpolate",
           ["linear"],

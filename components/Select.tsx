@@ -61,7 +61,7 @@ export const Select = ({
             })
             .map(([key, measureGroup]) => {
               const groupItems = Object.values(measureGroup).filter(
-                (measure) => !query || measureNames[measure.id].includes(query)
+                (measure) => !query || measureNames[measure.id].toLocaleLowerCase().includes(query.toLowerCase())
               );
               return (
                 <Fragment key={key}>
