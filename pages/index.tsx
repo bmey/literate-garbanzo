@@ -1,6 +1,7 @@
 import { SimpleBarChart, BarChartPoint } from "@/components/BarChart";
 import { Filters } from "@/components/Filters";
 import { HcahpsMap } from "@/components/HcahpsMap";
+import { Logo } from "@/components/Logo";
 import { Select } from "@/components/Select";
 import { Summary } from "@/components/Summary";
 import { MeasureFilter } from "@/types/filters";
@@ -184,8 +185,19 @@ export default function Home({
   return (
     <main className={`flex min-h-screen p-0 ${inter.className}`}>
       <div className="w-[20rem] min-w-[20rem] flex flex-col p-5 via-slate-950 from-slate-950 to-slate-900 bg-gradient-to-br border-r border-r-slate-800 overflow-y-auto max-h-screen">
-        <div className="border-b border-emerald-400 pb-3 mb-8 text-2xl bg-gradient-to-r to-violet-600 from-emerald-400 inline-block text-transparent bg-clip-text">
-          <h1>Patient Satisfaction</h1>
+        <div className="mb-6 text-2xl bg-gradient-to-r to-violet-600 from-emerald-400 inline-block text-transparent bg-clip-text">
+          <h1 className="flex items-center">
+            <div className="w-12 -mt-1 h-full text-emerald-400">
+              <Logo />
+            </div>
+            <div className="border-l-2 border-emerald-400 border-opacity-50 uppercase text-lg pl-1 ml-1 font-bold tracking-wide">
+              Patient Satisfaction
+            </div>
+          </h1>
+          <p className="text-xs text-slate-400 mt-4 font-light bg-violet-950 bg-opacity-30 p-4 rounded-lg border border-violet-800">
+            Welcome to the Patient Satisfaction analysis tool! Use the map,
+            controls, and charts to find trends or outliers in the data.
+          </p>
         </div>
         <Select
           measures={measures}
