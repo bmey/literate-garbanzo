@@ -70,7 +70,7 @@ export const Filters = ({
       <div className="text-sm font-medium leading-6 text-gray-50">Filters</div>
       {filters.map((filter, index) => (
         <div
-          key={index}
+          key={`${filter.type}-${index}`}
           className="border border-slate-800 p-3 bg-gray-900 rounded-md my-2"
         >
           <Select
