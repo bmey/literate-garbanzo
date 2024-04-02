@@ -130,7 +130,7 @@ export const Filters = ({
         onClick={() =>
           setFilters([
             ...(filters || []),
-            { type: undefined, operation: OperationType[">"], value: 0 },
+            { type: undefined, operation: OperationType[">"], value: undefined },
           ])
         }
       >
